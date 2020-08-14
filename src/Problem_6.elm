@@ -1,4 +1,4 @@
-module Main exposing (..)
+module Problem_6 exposing (..)
 -- https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/p/p06.html
 
 import Html
@@ -7,9 +7,8 @@ import Maybe
 
 isPalindrome : List a -> Bool
 isPalindrome xs =
-    -- your implementation here
-    False
-
+    xs == List.reverse xs
+˝
 
 main : Html.Html a
 main =
@@ -22,7 +21,7 @@ main =
                 "Your implementation failed one test."
 
             x ->
-                "Your implementation failed " ++ (toString x) ++ " tests."
+                "Your implementation failed " ++ (Debug.toString x) ++ " tests."
 
 
 test : Int
