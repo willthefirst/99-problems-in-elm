@@ -1,4 +1,4 @@
-module Problem_7 exposing (..)
+module Problem_17 exposing (..)
 -- https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/p/p17.html
 
 import Html exposing (text)

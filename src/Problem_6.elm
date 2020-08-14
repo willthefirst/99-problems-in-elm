@@ -8,7 +8,7 @@ import Maybe
 isPalindrome : List a -> Bool
 isPalindrome xs =
     xs == List.reverse xs
-˝
+
 
 main : Html.Html a
 main =
