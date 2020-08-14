@@ -1,9 +1,9 @@
 module Problem_7 exposing (..)
+-- https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/p/p17.html
 
 import Html exposing (text)
 import List 
 
--- https://johncrane.gitbooks.io/ninety-nine-elm-problems/content/p/p17.html
 
 split : List a -> Int -> (List a, List a)
 split list count =
