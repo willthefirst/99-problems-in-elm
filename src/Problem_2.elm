@@ -1,7 +1,6 @@
 module Problem_2 exposing (..)
 -- https://github.com/wearsunscreen/ninety-nine-elm-problems/blob/master/p/p02.md
 
-
 import Html
 import List
 import Maybe
