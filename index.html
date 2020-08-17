@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Problem_14</title>
+  <title>Problem_15</title>
   <style>body { padding: 0; margin: 0; }</style>
 </head>
 
@@ -4418,102 +4418,187 @@ var $elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 			return 3;
 	}
 };
-var $elm$core$List$any = F2(
-	function (isOkay, list) {
-		any:
-		while (true) {
-			if (!list.b) {
-				return false;
+var $elm$core$List$foldrHelper = F4(
+	function (fn, acc, ctr, ls) {
+		if (!ls.b) {
+			return acc;
+		} else {
+			var a = ls.a;
+			var r1 = ls.b;
+			if (!r1.b) {
+				return A2(fn, a, acc);
 			} else {
-				var x = list.a;
-				var xs = list.b;
-				if (isOkay(x)) {
-					return true;
+				var b = r1.a;
+				var r2 = r1.b;
+				if (!r2.b) {
+					return A2(
+						fn,
+						a,
+						A2(fn, b, acc));
 				} else {
-					var $temp$isOkay = isOkay,
-						$temp$list = xs;
-					isOkay = $temp$isOkay;
-					list = $temp$list;
-					continue any;
+					var c = r2.a;
+					var r3 = r2.b;
+					if (!r3.b) {
+						return A2(
+							fn,
+							a,
+							A2(
+								fn,
+								b,
+								A2(fn, c, acc)));
+					} else {
+						var d = r3.a;
+						var r4 = r3.b;
+						var res = (ctr > 500) ? A3(
+							$elm$core$List$foldl,
+							fn,
+							acc,
+							$elm$core$List$reverse(r4)) : A4($elm$core$List$foldrHelper, fn, acc, ctr + 1, r4);
+						return A2(
+							fn,
+							a,
+							A2(
+								fn,
+								b,
+								A2(
+									fn,
+									c,
+									A2(fn, d, res))));
+					}
 				}
 			}
 		}
 	});
-var $elm$core$Basics$composeL = F3(
-	function (g, f, x) {
-		return g(
-			f(x));
+var $elm$core$List$foldr = F3(
+	function (fn, acc, ls) {
+		return A4($elm$core$List$foldrHelper, fn, acc, 0, ls);
 	});
-var $elm$core$Basics$not = _Basics_not;
-var $elm$core$List$all = F2(
-	function (isOkay, list) {
-		return !A2(
-			$elm$core$List$any,
-			A2($elm$core$Basics$composeL, $elm$core$Basics$not, isOkay),
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
 			list);
 	});
-var $author$project$Problem_14$duplicate = function (list) {
-	if (!list.b) {
-		return _List_Nil;
-	} else {
-		var x = list.a;
-		var xs = list.b;
-		return A2(
-			$elm$core$List$cons,
-			x,
-			A2(
+var $elm$core$Debug$log = _Debug_log;
+var $elm$core$Basics$negate = function (n) {
+	return -n;
+};
+var $elm$core$List$append = F2(
+	function (xs, ys) {
+		if (!ys.b) {
+			return xs;
+		} else {
+			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
+		}
+	});
+var $elm$core$List$concat = function (lists) {
+	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
+};
+var $author$project$Problem_15$repeatElements = F2(
+	function (count, list) {
+		if (!list.b) {
+			return _List_Nil;
+		} else {
+			var x = list.a;
+			var xs = list.b;
+			return (count < 1) ? _List_Nil : A2(
 				$elm$core$List$cons,
 				x,
-				$author$project$Problem_14$duplicate(xs)));
-	}
-};
-var $author$project$Problem_14$test = A2(
-	$elm$core$List$all,
-	function (_v0) {
-		var result = _v0.a;
-		var expect = _v0.b;
-		return _Utils_eq(result, expect);
-	},
-	_List_fromArray(
-		[
-			_Utils_Tuple2(
-			$author$project$Problem_14$duplicate(
+				$elm$core$List$concat(
+					_List_fromArray(
+						[
+							A2(
+							$author$project$Problem_15$repeatElements,
+							count - 1,
+							_List_fromArray(
+								[x])),
+							A2($author$project$Problem_15$repeatElements, count, xs)
+						])));
+		}
+	});
+var $author$project$Problem_15$test = $elm$core$List$length(
+	A2(
+		$elm$core$List$filter,
+		$elm$core$Basics$eq(false),
+		_List_fromArray(
+			[
+				_Utils_eq(
+				A2(
+					$author$project$Problem_15$repeatElements,
+					2,
+					_List_fromArray(
+						[1, 2, 5, 5, 2, 1])),
 				_List_fromArray(
-					[1, 2, 3, 5, 8, 8])),
-			_List_fromArray(
-				[1, 1, 2, 2, 3, 3, 5, 5, 8, 8, 8, 8])),
-			_Utils_Tuple2(
-			$author$project$Problem_14$duplicate(_List_Nil),
-			_List_Nil),
-			_Utils_Tuple2(
-			$author$project$Problem_14$duplicate(
+					[1, 1, 2, 2, 5, 5, 5, 5, 2, 2, 1, 1])),
+				_Utils_eq(
+				A2(
+					$elm$core$Debug$log,
+					'here',
+					A2(
+						$author$project$Problem_15$repeatElements,
+						4,
+						_List_fromArray(
+							[1, 2]))),
 				_List_fromArray(
-					[1])),
-			_List_fromArray(
-				[1, 1]))
-		])) && A2(
-	$elm$core$List$all,
-	function (_v1) {
-		var result = _v1.a;
-		var expect = _v1.b;
-		return _Utils_eq(result, expect);
-	},
-	_List_fromArray(
-		[
-			_Utils_Tuple2(
-			$author$project$Problem_14$duplicate(
+					[1, 1, 1, 1, 2, 2, 2, 2])),
+				_Utils_eq(
+				A2($author$project$Problem_15$repeatElements, 4, _List_Nil),
+				_List_Nil),
+				_Utils_eq(
+				A2(
+					$author$project$Problem_15$repeatElements,
+					0,
+					_List_fromArray(
+						[1, 2])),
+				_List_Nil),
+				_Utils_eq(
+				A2(
+					$author$project$Problem_15$repeatElements,
+					-1,
+					_List_fromArray(
+						[1, 2])),
+				_List_Nil),
+				_Utils_eq(
+				A2(
+					$author$project$Problem_15$repeatElements,
+					40,
+					_List_fromArray(
+						[1])),
 				_List_fromArray(
-					['1', '2', '5'])),
-			_List_fromArray(
-				['1', '1', '2', '2', '5', '5']))
-		]));
+					[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])),
+				_Utils_eq(
+				A2(
+					$author$project$Problem_15$repeatElements,
+					4,
+					_List_fromArray(
+						['1', '2'])),
+				_List_fromArray(
+					['1', '1', '1', '1', '2', '2', '2', '2']))
+			])));
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $author$project$Problem_14$main = $elm$html$Html$text(
-	$author$project$Problem_14$test ? 'Your implementation passed all tests.' : 'Your implementation failed at least one test.');
-_Platform_export({'Problem_14':{'init':_VirtualDom_init($author$project$Problem_14$main)(0)(0)}});}(this));
+var $elm$core$Debug$toString = _Debug_toString;
+var $author$project$Problem_15$main = $elm$html$Html$text(
+	function () {
+		var _v0 = $author$project$Problem_15$test;
+		switch (_v0) {
+			case 0:
+				return 'Your implementation passed all tests.';
+			case 1:
+				return 'Your implementation failed one test.';
+			default:
+				var x = _v0;
+				return 'Your implementation failed ' + ($elm$core$Debug$toString(x) + ' tests.');
+		}
+	}());
+_Platform_export({'Problem_15':{'init':_VirtualDom_init($author$project$Problem_15$main)(0)(0)}});}(this));
 
-  var app = Elm.Problem_14.init({ node: document.getElementById("elm") });
+  var app = Elm.Problem_15.init({ node: document.getElementById("elm") });
 }
 catch (e)
 {
