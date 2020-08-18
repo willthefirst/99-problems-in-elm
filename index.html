@@ -4484,7 +4484,6 @@ var $elm$core$List$filter = F2(
 			_List_Nil,
 			list);
 	});
-var $elm$core$Debug$log = _Debug_log;
 var $elm$core$Basics$negate = function (n) {
 	return -n;
 };
@@ -4496,29 +4495,44 @@ var $elm$core$List$append = F2(
 			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
 		}
 	});
-var $elm$core$List$concat = function (lists) {
-	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
-};
+var $elm$core$List$repeatHelp = F3(
+	function (result, n, value) {
+		repeatHelp:
+		while (true) {
+			if (n <= 0) {
+				return result;
+			} else {
+				var $temp$result = A2($elm$core$List$cons, value, result),
+					$temp$n = n - 1,
+					$temp$value = value;
+				result = $temp$result;
+				n = $temp$n;
+				value = $temp$value;
+				continue repeatHelp;
+			}
+		}
+	});
+var $elm$core$List$repeat = F2(
+	function (n, value) {
+		return A3($elm$core$List$repeatHelp, _List_Nil, n, value);
+	});
 var $author$project$Problem_15$repeatElements = F2(
 	function (count, list) {
 		if (!list.b) {
 			return _List_Nil;
 		} else {
-			var x = list.a;
-			var xs = list.b;
-			return (count < 1) ? _List_Nil : A2(
-				$elm$core$List$cons,
-				x,
-				$elm$core$List$concat(
-					_List_fromArray(
-						[
-							A2(
-							$author$project$Problem_15$repeatElements,
-							count - 1,
-							_List_fromArray(
-								[x])),
-							A2($author$project$Problem_15$repeatElements, count, xs)
-						])));
+			var xs = list;
+			return A3(
+				$elm$core$List$foldr,
+				F2(
+					function (x, newList) {
+						return A2(
+							$elm$core$List$append,
+							A2($elm$core$List$repeat, count, x),
+							newList);
+					}),
+				_List_Nil,
+				xs);
 		}
 	});
 var $author$project$Problem_15$test = $elm$core$List$length(
@@ -4537,13 +4551,10 @@ var $author$project$Problem_15$test = $elm$core$List$length(
 					[1, 1, 2, 2, 5, 5, 5, 5, 2, 2, 1, 1])),
 				_Utils_eq(
 				A2(
-					$elm$core$Debug$log,
-					'here',
-					A2(
-						$author$project$Problem_15$repeatElements,
-						4,
-						_List_fromArray(
-							[1, 2]))),
+					$author$project$Problem_15$repeatElements,
+					4,
+					_List_fromArray(
+						[1, 2])),
 				_List_fromArray(
 					[1, 1, 1, 1, 2, 2, 2, 2])),
 				_Utils_eq(
