@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Problem_15</title>
+  <title>Problem_68a</title>
   <style>body { padding: 0; margin: 0; }</style>
 </head>
 
@@ -91,7 +91,7 @@ function A9(fun, a, b, c, d, e, f, g, h, i) {
   return fun.a === 9 ? fun.f(a, b, c, d, e, f, g, h, i) : fun(a)(b)(c)(d)(e)(f)(g)(h)(i);
 }
 
-console.warn('Compiled in DEBUG mode. Follow the advice at https://elm-lang.org/0.19.1/optimize for better performance and smaller assets.');
+console.warn('Compiled in DEV mode. Follow the advice at https://elm-lang.org/0.19.1/optimize for better performance and smaller assets.');
 
 
 // EQUALITY
@@ -4418,198 +4418,162 @@ var $elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 			return 3;
 	}
 };
-var $elm$core$List$foldrHelper = F4(
-	function (fn, acc, ctr, ls) {
-		if (!ls.b) {
-			return acc;
-		} else {
-			var a = ls.a;
-			var r1 = ls.b;
-			if (!r1.b) {
-				return A2(fn, a, acc);
+var $author$project$Problem_68a$Empty = {$: 'Empty'};
+var $elm$core$List$any = F2(
+	function (isOkay, list) {
+		any:
+		while (true) {
+			if (!list.b) {
+				return false;
 			} else {
-				var b = r1.a;
-				var r2 = r1.b;
-				if (!r2.b) {
-					return A2(
-						fn,
-						a,
-						A2(fn, b, acc));
+				var x = list.a;
+				var xs = list.b;
+				if (isOkay(x)) {
+					return true;
 				} else {
-					var c = r2.a;
-					var r3 = r2.b;
-					if (!r3.b) {
-						return A2(
-							fn,
-							a,
-							A2(
-								fn,
-								b,
-								A2(fn, c, acc)));
-					} else {
-						var d = r3.a;
-						var r4 = r3.b;
-						var res = (ctr > 500) ? A3(
-							$elm$core$List$foldl,
-							fn,
-							acc,
-							$elm$core$List$reverse(r4)) : A4($elm$core$List$foldrHelper, fn, acc, ctr + 1, r4);
-						return A2(
-							fn,
-							a,
-							A2(
-								fn,
-								b,
-								A2(
-									fn,
-									c,
-									A2(fn, d, res))));
-					}
+					var $temp$isOkay = isOkay,
+						$temp$list = xs;
+					isOkay = $temp$isOkay;
+					list = $temp$list;
+					continue any;
 				}
 			}
 		}
 	});
-var $elm$core$List$foldr = F3(
-	function (fn, acc, ls) {
-		return A4($elm$core$List$foldrHelper, fn, acc, 0, ls);
+var $elm$core$Basics$composeL = F3(
+	function (g, f, x) {
+		return g(
+			f(x));
 	});
-var $elm$core$List$filter = F2(
-	function (isGood, list) {
-		return A3(
-			$elm$core$List$foldr,
-			F2(
-				function (x, xs) {
-					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
-				}),
-			_List_Nil,
+var $elm$core$Basics$not = _Basics_not;
+var $elm$core$List$all = F2(
+	function (isOkay, list) {
+		return !A2(
+			$elm$core$List$any,
+			A2($elm$core$Basics$composeL, $elm$core$Basics$not, isOkay),
 			list);
 	});
-var $elm$core$Basics$negate = function (n) {
-	return -n;
+var $author$project$Problem_68a$preorder = function (tree) {
+	if (tree.$ === 'Empty') {
+		return _List_Nil;
+	} else {
+		var a = tree.a;
+		var leftTree = tree.b;
+		var rightTree = tree.c;
+		return A2(
+			$elm$core$List$cons,
+			a,
+			_Utils_ap(
+				$author$project$Problem_68a$preorder(leftTree),
+				$author$project$Problem_68a$preorder(rightTree)));
+	}
 };
-var $elm$core$List$append = F2(
-	function (xs, ys) {
-		if (!ys.b) {
-			return xs;
-		} else {
-			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
-		}
+var $author$project$Problem_68a$Node = F3(
+	function (a, b, c) {
+		return {$: 'Node', a: a, b: b, c: c};
 	});
-var $elm$core$List$repeatHelp = F3(
-	function (result, n, value) {
-		repeatHelp:
-		while (true) {
-			if (n <= 0) {
-				return result;
-			} else {
-				var $temp$result = A2($elm$core$List$cons, value, result),
-					$temp$n = n - 1,
-					$temp$value = value;
-				result = $temp$result;
-				n = $temp$n;
-				value = $temp$value;
-				continue repeatHelp;
-			}
-		}
-	});
-var $elm$core$List$repeat = F2(
-	function (n, value) {
-		return A3($elm$core$List$repeatHelp, _List_Nil, n, value);
-	});
-var $author$project$Problem_15$repeatElements = F2(
-	function (count, list) {
-		if (!list.b) {
-			return _List_Nil;
-		} else {
-			var xs = list;
-			return A3(
-				$elm$core$List$foldr,
-				F2(
-					function (x, newList) {
-						return A2(
-							$elm$core$List$append,
-							A2($elm$core$List$repeat, count, x),
-							newList);
-					}),
-				_List_Nil,
-				xs);
-		}
-	});
-var $author$project$Problem_15$test = $elm$core$List$length(
-	A2(
-		$elm$core$List$filter,
-		$elm$core$Basics$eq(false),
-		_List_fromArray(
-			[
-				_Utils_eq(
-				A2(
-					$author$project$Problem_15$repeatElements,
-					2,
-					_List_fromArray(
-						[1, 2, 5, 5, 2, 1])),
-				_List_fromArray(
-					[1, 1, 2, 2, 5, 5, 5, 5, 2, 2, 1, 1])),
-				_Utils_eq(
-				A2(
-					$author$project$Problem_15$repeatElements,
-					4,
-					_List_fromArray(
-						[1, 2])),
-				_List_fromArray(
-					[1, 1, 1, 1, 2, 2, 2, 2])),
-				_Utils_eq(
-				A2($author$project$Problem_15$repeatElements, 4, _List_Nil),
-				_List_Nil),
-				_Utils_eq(
-				A2(
-					$author$project$Problem_15$repeatElements,
-					0,
-					_List_fromArray(
-						[1, 2])),
-				_List_Nil),
-				_Utils_eq(
-				A2(
-					$author$project$Problem_15$repeatElements,
-					-1,
-					_List_fromArray(
-						[1, 2])),
-				_List_Nil),
-				_Utils_eq(
-				A2(
-					$author$project$Problem_15$repeatElements,
-					40,
-					_List_fromArray(
-						[1])),
-				_List_fromArray(
-					[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])),
-				_Utils_eq(
-				A2(
-					$author$project$Problem_15$repeatElements,
-					4,
-					_List_fromArray(
-						['1', '2'])),
-				_List_fromArray(
-					['1', '1', '1', '1', '2', '2', '2', '2']))
-			])));
+var $author$project$Problem_68a$tree67 = A3(
+	$author$project$Problem_68a$Node,
+	_Utils_chr('a'),
+	A3(
+		$author$project$Problem_68a$Node,
+		_Utils_chr('b'),
+		A3(
+			$author$project$Problem_68a$Node,
+			_Utils_chr('d'),
+			$author$project$Problem_68a$Empty,
+			$author$project$Problem_68a$Empty),
+		A3(
+			$author$project$Problem_68a$Node,
+			_Utils_chr('e'),
+			$author$project$Problem_68a$Empty,
+			$author$project$Problem_68a$Empty)),
+	A3(
+		$author$project$Problem_68a$Node,
+		_Utils_chr('c'),
+		$author$project$Problem_68a$Empty,
+		A3(
+			$author$project$Problem_68a$Node,
+			_Utils_chr('f'),
+			A3(
+				$author$project$Problem_68a$Node,
+				_Utils_chr('g'),
+				$author$project$Problem_68a$Empty,
+				$author$project$Problem_68a$Empty),
+			$author$project$Problem_68a$Empty)));
+var $author$project$Problem_68a$tree68 = A3(
+	$author$project$Problem_68a$Node,
+	1,
+	A3(
+		$author$project$Problem_68a$Node,
+		2,
+		A3($author$project$Problem_68a$Node, 3, $author$project$Problem_68a$Empty, $author$project$Problem_68a$Empty),
+		A3($author$project$Problem_68a$Node, 4, $author$project$Problem_68a$Empty, $author$project$Problem_68a$Empty)),
+	A3(
+		$author$project$Problem_68a$Node,
+		5,
+		$author$project$Problem_68a$Empty,
+		A3(
+			$author$project$Problem_68a$Node,
+			6,
+			A3(
+				$author$project$Problem_68a$Node,
+				7,
+				$author$project$Problem_68a$Empty,
+				A3(
+					$author$project$Problem_68a$Node,
+					8,
+					A3($author$project$Problem_68a$Node, 9, $author$project$Problem_68a$Empty, $author$project$Problem_68a$Empty),
+					$author$project$Problem_68a$Empty)),
+			$author$project$Problem_68a$Empty)));
+var $author$project$Problem_68a$tree69 = A3(
+	$author$project$Problem_68a$Node,
+	6,
+	A3(
+		$author$project$Problem_68a$Node,
+		2,
+		A3($author$project$Problem_68a$Node, 1, $author$project$Problem_68a$Empty, $author$project$Problem_68a$Empty),
+		A3(
+			$author$project$Problem_68a$Node,
+			4,
+			A3($author$project$Problem_68a$Node, 3, $author$project$Problem_68a$Empty, $author$project$Problem_68a$Empty),
+			A3($author$project$Problem_68a$Node, 5, $author$project$Problem_68a$Empty, $author$project$Problem_68a$Empty))),
+	A3($author$project$Problem_68a$Node, 7, $author$project$Problem_68a$Empty, $author$project$Problem_68a$Empty));
+var $author$project$Problem_68a$test = A2(
+	$elm$core$List$all,
+	$elm$core$Basics$eq(true),
+	_List_fromArray(
+		[
+			_Utils_eq(
+			$author$project$Problem_68a$preorder($author$project$Problem_68a$Empty),
+			_List_Nil),
+			_Utils_eq(
+			$author$project$Problem_68a$preorder($author$project$Problem_68a$tree67),
+			_List_fromArray(
+				[
+					_Utils_chr('a'),
+					_Utils_chr('b'),
+					_Utils_chr('d'),
+					_Utils_chr('e'),
+					_Utils_chr('c'),
+					_Utils_chr('f'),
+					_Utils_chr('g')
+				])),
+			_Utils_eq(
+			$author$project$Problem_68a$preorder($author$project$Problem_68a$tree68),
+			A2($elm$core$List$range, 1, 9)),
+			_Utils_eq(
+			$author$project$Problem_68a$preorder($author$project$Problem_68a$tree69),
+			_List_fromArray(
+				[6, 2, 1, 4, 3, 5, 7]))
+		]));
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $elm$core$Debug$toString = _Debug_toString;
-var $author$project$Problem_15$main = $elm$html$Html$text(
-	function () {
-		var _v0 = $author$project$Problem_15$test;
-		switch (_v0) {
-			case 0:
-				return 'Your implementation passed all tests.';
-			case 1:
-				return 'Your implementation failed one test.';
-			default:
-				var x = _v0;
-				return 'Your implementation failed ' + ($elm$core$Debug$toString(x) + ' tests.');
-		}
-	}());
-_Platform_export({'Problem_15':{'init':_VirtualDom_init($author$project$Problem_15$main)(0)(0)}});}(this));
+var $author$project$Problem_68a$main = $elm$html$Html$text(
+	$author$project$Problem_68a$test ? 'Your implementation passed all tests.' : 'Your implementation failed at least one test.');
+_Platform_export({'Problem_68a':{'init':_VirtualDom_init($author$project$Problem_68a$main)(0)(0)}});}(this));
 
-  var app = Elm.Problem_15.init({ node: document.getElementById("elm") });
+  var app = Elm.Problem_68a.init({ node: document.getElementById("elm") });
 }
 catch (e)
 {
